@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Lista de Usuarios</h1>
+    <a routerLink="/newuser" class="btn btn-primary">
+      Nuevo Usuario
+    </a>
+  </div>
+
+  @if (loading) {
+    <div class="alert alert-info text-center">
+      <div class="spinner-border spinner-border-sm me-2"></div>
+      Cargando usuarios...
+    </div>
+  }
+
+  @if (error && !loading) {
+    <div class="alert alert-danger text-center">
+      {{ error }}
+      <br>
+      <button class="btn btn-outline-danger btn-sm mt-2" (click)="loadUsers()">
+        Reintentar
+      </button>
+    </div>
+  }
+
+  @if (users && users.length > 0 && !loading) {
+    <div class="row">
+      @for (user of users; track user.id) {
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <img [src]="user.image" class="card-img-top" style="height: 200px; object-fit: cover;" [alt]="user.first_name">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ user.first_name }} {{ user.last_name }}</h5>
+              <p class="card-text flex-grow-1">{{ user.email }}</p>
+              <small class="text-muted mb-2">@{{ user.username }}</small>
+              <div class="d-grid gap-2">
+                <a [routerLink]="['/user', user.id]" class="btn btn-outline-primary btn-sm">Ver</a>
+                <a [routerLink]="['/updateuser', user.id]" class="btn btn-outline-warning btn-sm">Editar</a>
+                <button (click)="deleteUser(user.id)" class="btn btn-outline-danger btn-sm">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,157 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">
+            @if (isEditMode) {
+              Editar Usuario
+            } @else {
+              Crear Nuevo Usuario
+            }
+          </h2>
+        </div>
+
+        <div class="card-body">
+
+          @if (loading) {
+            <div class="alert alert-info text-center">
+              <div class="spinner-border spinner-border-sm me-2"></div>
+              Procesando...
+            </div>
+          }
+
+          @if (error && !loading) {
+            <div class="alert alert-danger">
+              {{ error }}
+            </div>
+          }
+
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+
+            <!-- Campo Nombre -->
+            <div class="mb-3">
+              <label for="first_name" class="form-label">
+                Nombre <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                id="first_name"
+                formControlName="first_name"
+                class="form-control"
+                [class.is-invalid]="hasFieldError('first_name')"
+                placeholder="Ingresa el nombre">
+
+              @if (hasFieldError('first_name')) {
+                <div class="invalid-feedback">
+                  {{ getFieldError('first_name') }}
+                </div>
+              }
+            </div>
+
+            <!-- Campo Apellido -->
+            <div class="mb-3">
+              <label for="last_name" class="form-label">
+                Apellido <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                id="last_name"
+                formControlName="last_name"
+                class="form-control"
+                [class.is-invalid]="hasFieldError('last_name')"
+                placeholder="Ingresa el apellido">
+
+              @if (hasFieldError('last_name')) {
+                <div class="invalid-feedback">
+                  {{ getFieldError('last_name') }}
+                </div>
+              }
+            </div>
+
+            <!-- Campo Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">
+                Email <span class="text-danger">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+                [class.is-invalid]="hasFieldError('email')"
+                placeholder="ejemplo@correo.com">
+
+              @if (hasFieldError('email')) {
+                <div class="invalid-feedback">
+                  {{ getFieldError('email') }}
+                </div>
+              }
+            </div>
+
+            <!-- Campo Imagen -->
+            <div class="mb-3">
+              <label for="image" class="form-label">
+                URL de Imagen <span class="text-danger">*</span>
+              </label>
+              <input
+                type="url"
+                id="image"
+                formControlName="image"
+                class="form-control"
+                [class.is-invalid]="hasFieldError('image')"
+                placeholder="https://ejemplo.com/imagen.jpg">
+
+              @if (hasFieldError('image')) {
+                <div class="invalid-feedback">
+                  {{ getFieldError('image') }}
+                </div>
+              }
+
+              <!-- Preview de imagen -->
+              @if (userForm.get('image')?.value && userForm.get('image')?.valid) {
+                <div class="mt-2">
+                  <small class="text-muted">Vista previa:</small>
+                  <br>
+                  <img [src]="userForm.get('image')?.value"
+                       class="img-thumbnail mt-1"
+                       style="max-width: 100px; max-height: 100px;"
+                       alt="Vista previa"
+                       (error)="userForm.get('image')?.setErrors({'pattern': true})">
+                </div>
+              }
+            </div>
+
+            <!-- Botones -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button type="button" class="btn btn-secondary" (click)="cancel()">
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="loading || userForm.invalid">
+                @if (loading) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                }
+                @if (isEditMode) {
+                  Actualizar Usuario
+                } @else {
+                  Crear Usuario
+                }
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- Información de campos requeridos -->
+      <div class="text-muted text-center mt-3">
+        <small>Los campos marcados con <span class="text-danger">*</span> son obligatorios</small>
+      </div>
+
+    </div>
+  </div>
+</div>

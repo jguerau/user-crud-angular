@@ -1,0 +1,79 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      @if (loading) {
+        <div class="alert alert-info text-center">
+          <div class="spinner-border spinner-border-sm me-2"></div>
+          Cargando usuario...
+        </div>
+      }
+
+      @if (error && !loading) {
+        <div class="alert alert-danger text-center">
+          {{ error }}
+          <br>
+          <a routerLink="/home" class="btn btn-outline-danger btn-sm mt-2">
+            Volver al inicio
+          </a>
+        </div>
+      }
+
+      @if (user && !loading) {
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Detalle del Usuario</h2>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 text-center">
+                <img [src]="user.image"
+                     class="img-fluid rounded-circle mb-3"
+                     style="width: 200px; height: 200px; object-fit: cover;"
+                     [alt]="user.first_name + ' ' + user.last_name">
+              </div>
+              <div class="col-md-8">
+                <table class="table table-borderless">
+                  <tr>
+                    <th scope="row">ID:</th>
+                    <td>{{ user.id }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Nombre:</th>
+                    <td>{{ user.first_name }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Apellido:</th>
+                    <td>{{ user.last_name }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Email:</th>
+                    <td>{{ user.email }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Usuario:</th>
+                    <td>@{{ user.username }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex gap-2">
+              <a routerLink="/home" class="btn btn-secondary">
+                Volver
+              </a>
+              <a [routerLink]="['/updateuser', user.id]" class="btn btn-warning">
+                Editar
+              </a>
+              <button (click)="deleteUser()" class="btn btn-danger">
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>
