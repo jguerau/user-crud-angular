@@ -33,11 +33,13 @@ export class UserDetailComponent implements OnInit {
     this.error = '';
 
     this.userService.getUserById(id).subscribe({
-      next: (response) => {
-        this.user = response.data;
+      next: (user) => {
+        console.log('Usuario cargado en detalle:', user);
+        this.user = user;
         this.loading = false;
       },
       error: (error) => {
+        console.error('Error al cargar usuario:', error);
         this.error = 'Error al cargar el usuario';
         this.loading = false;
       }
@@ -48,10 +50,12 @@ export class UserDetailComponent implements OnInit {
     if (this.user && confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
       this.userService.deleteUser(this.user.id).subscribe({
         next: () => {
+          console.log('Usuario eliminado desde detalle');
           window.location.href = '/home';
         },
         error: (error) => {
           console.error('Error al eliminar usuario:', error);
+          alert('Error al eliminar el usuario');
         }
       });
     }

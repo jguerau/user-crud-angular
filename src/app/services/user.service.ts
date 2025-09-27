@@ -1,11 +1,10 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   User,
   UsersResponse,
-  SingleUserResponse,
   CreateUserRequest,
   CreateUserResponse
 } from '../interfaces/user.interface';
@@ -25,8 +24,16 @@ export class UserService {
   }
 
   // Obtener un usuario específico por ID
-  getUserById(id: number): Observable<SingleUserResponse> {
-    return this.http.get<SingleUserResponse>(`${this.apiUrl}/${id}`);
+  getUserById(id: number): Observable<User> {
+    return this.getUsers().pipe(
+      map(response => {
+        const user = response.results.find(u => u.id === id);
+        if (!user) {
+          throw new Error(`Usuario con ID ${id} no encontrado`);
+        }
+        return user;
+      })
+    );
   }
 
   // Crear un nuevo usuario

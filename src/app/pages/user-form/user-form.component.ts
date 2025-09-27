@@ -49,7 +49,7 @@ export class UserFormComponent implements OnInit {
       this.loading = true;
       this.userService.getUserById(this.userId).subscribe({
         next: (response) => {
-          const user = response.data;
+          const user = response;
           this.userForm.patchValue({
             first_name: user.first_name,
             last_name: user.last_name,
